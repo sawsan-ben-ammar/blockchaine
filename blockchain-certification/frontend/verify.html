@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Verify a Diploma</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/ethers@6.13.4/dist/ethers.umd.min.js"></script>
+  </head>
+  <body>
+    <header>
+      <div class="wrap">
+        <h1>Cert<span>Chain</span> · Verify</h1>
+        <nav>
+          <a href="verify.html" class="active">Verify</a><a href="issuer.html">Issuer</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="wrap">
+      <section class="card">
+        <h2>Check a diploma</h2>
+        <p class="hint">
+          Free and private: the file is hashed in your browser and never uploaded. No wallet
+          needed.
+        </p>
+
+        <label for="file">Diploma file (PDF)</label>
+        <input type="file" id="file" />
+
+        <label for="salt">Salt (printed on the diploma or in its QR code)</label>
+        <input type="text" id="salt" placeholder="0x... (64 hex characters)" />
+        <div id="saltHint" class="small"></div>
+
+        <button id="verifyBtn">Verify</button>
+        <div id="result" class="status"></div>
+      </section>
+
+      <section class="card">
+        <label for="network">Network</label>
+        <select id="network"></select>
+        <p id="contractInfo" class="small"></p>
+      </section>
+    </main>
+
+    <script src="js/config.js"></script>
+    <script src="js/common.js"></script>
+    <script src="js/verify.js"></script>
+  </body>
+</html>

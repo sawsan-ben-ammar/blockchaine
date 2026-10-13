@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Issue Diplomas</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/ethers@6.13.4/dist/ethers.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  </head>
+  <body>
+    <header>
+      <div class="wrap">
+        <h1>Cert<span>Chain</span> · Issuer</h1>
+        <nav>
+          <a href="verify.html">Verify</a><a href="issuer.html" class="active">Issuer</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="wrap">
+      <!-- 1. Wallet -->
+      <section class="card">
+        <h2>Wallet</h2>
+        <p class="hint">Issuing costs gas and needs a wallet with the issuer role.</p>
+        <label for="network">Network</label>
+        <select id="network"></select>
+        <button id="connect">Connect MetaMask</button>
+        <div id="walletStatus" class="status"></div>
+      </section>
+
+      <!-- 2. Issue one -->
+      <section class="card">
+        <h2>Issue a diploma</h2>
+        <p class="hint">
+          A random salt is generated, mixed with the file's hash, and only the result goes
+          on-chain.
+        </p>
+        <label for="issueFile">Diploma file</label>
+        <input type="file" id="issueFile" />
+        <button id="issueBtn">Issue</button>
+        <div id="issueResult" class="status"></div>
+
+        <div id="receipt" class="receipt" hidden>
+          <dl>
+            <dt>Salt (give it to the student)</dt>
+            <dd><code id="rSalt"></code></dd>
+            <dt>Certificate hash (stored on-chain)</dt>
+            <dd><code id="rHash"></code></dd>
+            <dt>Verification link</dt>
+            <dd><a id="rLink" target="_blank" rel="noopener">open verify page</a></dd>
+            <dd>
+              <button id="downloadReceipt" class="secondary">
+                Download receipt (.json)
+              </button>
+            </dd>
+          </dl>
+          <div id="qrcode"></div>
+        </div>
+      </section>
+
+      <!-- 3. Batch -->
+      <section class="card">
+        <h2>Issue a whole class</h2>
+        <p class="hint">
+          Select up to 100 files: one transaction for all of them. A CSV with every salt is
+          downloaded.
+        </p>
+        <input type="file" id="batchFiles" multiple />
+        <button id="batchBtn">Issue batch</button>
+        <div id="batchResult" class="status"></div>
+      </section>
+
+      <!-- 4. Revoke -->
+      <section class="card">
+        <h2>Revoke a diploma</h2>
+        <p class="hint">
+          Nothing is deleted: the diploma is marked as revoked and the history stays
+          on-chain.
+        </p>
+        <label for="revokeHash">Certificate hash</label>
+        <input
+          type="text"
+          id="revokeHash"
+          placeholder="0x... (or leave empty and use file + salt)"
+        />
+        <div class="row">
+          <div style="flex: 1 1 240px">
+            <label for="revokeFile">or: diploma file</label>
+            <input type="file" id="revokeFile" />
+          </div>
+          <div style="flex: 1 1 240px">
+            <label for="revokeSalt">and its salt</label>
+            <input type="text" id="revokeSalt" placeholder="0x..." />
+          </div>
+        </div>
+        <label for="revokeReason">Reason</label>
+        <input type="text" id="revokeReason" placeholder="e.g. Grading error" />
+        <button id="revokeBtn" class="danger">Revoke</button>
+        <div id="revokeResult" class="status"></div>
+      </section>
+
+      <!-- 5. Admin -->
+      <section class="card" id="adminCard" hidden>
+        <h2>Institutions (admin only)</h2>
+        <p class="hint">
+          Give another university's wallet the right to issue its own diplomas.
+        </p>
+        <label for="instAddress">Wallet address</label>
+        <input type="text" id="instAddress" placeholder="0x..." />
+        <label for="instName">Institution name</label>
+        <input type="text" id="instName" placeholder="e.g. University of Sfax" />
+        <div class="row">
+          <button id="addInstBtn">Add institution</button>
+          <button id="removeInstBtn" class="secondary">Remove issuer role</button>
+        </div>
+        <div id="adminResult" class="status"></div>
+      </section>
+    </main>
+
+    <script src="js/config.js"></script>
+    <script src="js/common.js"></script>
+    <script src="js/issuer.js"></script>
+  </body>
+</html>
